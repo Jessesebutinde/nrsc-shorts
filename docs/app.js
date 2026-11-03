@@ -23,7 +23,9 @@ const JOINS = {
 const EST = { whatsapp_long: 2500 + 128, whatsapp_saver: 1100 + 96, tiktok: 6000 + 160 };
 
 // ------------------------------------------------------------------ GitHub
-const API = 'https://api.github.com';
+// Relay holds the token; set after `wrangler deploy` (https://nrsc-shorts-relay.<subdomain>.workers.dev)
+const RELAY = 'https://nrsc-shorts-relay.jessesebutinde.workers.dev';
+const API = cfg.token ? 'https://api.github.com' : RELAY;
 async function gh(path, opts = {}) {
   const headers = { Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' };
   if (cfg.token) headers.Authorization = 'Bearer ' + cfg.token;
@@ -587,6 +589,7 @@ async function refreshStatus() {
       history.replaceState(null, '', location.pathname + location.search);
     }
   } catch (e) { /* ignore */ }
-  if (!cfg.token || !cfg.owner || !cfg.repo) openSettings();
+  cfg = Object.assign({ owner: 'Jessesebutinde', repo: 'nrsc-shorts' }, cfg);
+  if (!cfg.owner || !cfg.repo) openSettings();
   else loadLibrary();
 })();
