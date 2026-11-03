@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#15111F">
+<title>Namasuba Shorts</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ============ Settings ============ -->
+<section id="s-settings" class="screen" hidden>
+  <header class="bar"><h1>Namasuba Shorts</h1></header>
+  <div class="pad">
+    <p class="lead">Connect this phone to the church GitHub repo. You do this once.</p>
+    <label>GitHub owner <input id="cfg-owner" autocomplete="off" placeholder="Jessesebutinde"></label>
+    <label>Repo name <input id="cfg-repo" autocomplete="off" placeholder="nrsc-shorts"></label>
+    <label>Fine-grained token (Contents: read & write on this repo only) <input id="cfg-token" type="password" autocomplete="off" placeholder="github_pat_…"></label>
+    <label>Your name (shown on clips you make) <input id="cfg-name" autocomplete="off" placeholder="Jesse"></label>
+    <p class="hint">Make the token at github.com → Settings → Developer settings → Fine-grained tokens. Repository access: only this repo. Permissions: Contents read and write.</p>
+    <div class="row">
+      <button id="cfg-test" class="btn">Check connection</button>
+      <button id="cfg-save" class="btn gold">Save</button>
+    </div>
+    <p id="cfg-msg" class="msg"></p>
+  </div>
+</section>
+
+<!-- ============ Library ============ -->
+<section id="s-library" class="screen" hidden>
+  <header class="bar">
+    <h1>Namasuba Shorts</h1>
+    <button id="lib-settings" class="icon" title="Settings">⚙</button>
+  </header>
+  <div class="pad">
+    <p id="lib-msg" class="msg"></p>
+    <div id="lib-list" class="list"></div>
+    <button id="lib-refresh" class="btn wide">Refresh</button>
+  </div>
+</section>
+
+<!-- ============ Clips of one service ============ -->
+<section id="s-clips" class="screen" hidden>
+  <header class="bar">
+    <button id="clips-back" class="icon">‹</button>
+    <h1 id="clips-title">Service</h1>
+  </header>
+  <div class="pad">
+    <p id="clips-sub" class="hint"></p>
+    <div id="clips-list" class="list"></div>
+    <button id="clips-new" class="btn gold wide">+ New clip</button>
+  </div>
+</section>
+
+<!-- ============ Mark ============ -->
+<section id="s-mark" class="screen editor" hidden>
+  <header class="bar">
+    <button id="mark-back" class="icon">‹</button>
+    <h1 id="mark-title">Mark</h1>
+    <button id="mark-next" class="btn small gold">Arrange ›</button>
+  </header>
+
+  <div class="stage">
+    <video id="video" playsinline preload="metadata"></video>
+    <div id="frame" class="frame"></div>
+    <div id="frame-label" class="frame-label">9:16 frame</div>
+  </div>
+
+  <div class="scrub">
+    <canvas id="zoom" class="zoom"></canvas>
+    <div class="tc"><span id="tc-in">in —</span><span id="tc-now">0:00.0</span><span id="tc-out">out —</span></div>
+    <canvas id="overview" class="overview"></canvas>
+  </div>
+
+  <div class="controls">
+    <div class="row five">
+      <button class="btn" data-skip="-60">−1m</button>
+      <button class="btn" data-skip="-10">−10s</button>
+      <button id="play" class="btn">▶</button>
+      <button class="btn" data-skip="10">+10s</button>
+      <button class="btn" data-skip="60">+1m</button>
+    </div>
+    <div class="row two">
+      <button id="mark-in" class="btn big gold">IN</button>
+      <button id="mark-out" class="btn big gold">OUT</button>
+    </div>
+    <div class="row nudges">
+      <button class="chip" data-nudge="-0.5">−0.5</button>
+      <button class="chip" data-nudge="-0.1">−0.1</button>
+      <button class="chip" data-nudge="0.1">+0.1</button>
+      <button class="chip" data-nudge="0.5">+0.5</button>
+      <button id="snap" class="chip">Snap to pause</button>
+      <button id="play-clip" class="chip">Play clip</button>
+    </div>
+    <div class="row framerow">
+      <span class="lbl">Frame</span>
+      <input id="frame-x" type="range" min="0" max="100" value="50">
+      <button id="frame-here" class="chip">Frame here</button>
+      <button id="look" class="chip">Tight</button>
+    </div>
+  </div>
+
+  <div id="strip" class="strip"></div>
+</section>
+
+<!-- ============ Arrange ============ -->
+<section id="s-arrange" class="screen" hidden>
+  <header class="bar">
+    <button id="arr-back" class="icon">‹</button>
+    <h1>Arrange</h1>
+    <button id="arr-next" class="btn small gold">Joins ›</button>
+  </header>
+  <div class="pad">
+    <p class="hint">Tap a clip to play it. Use the arrows to change the order.</p>
+    <div id="arr-list" class="list"></div>
+  </div>
+</section>
+
+<!-- ============ Joins ============ -->
+<section id="s-joins" class="screen" hidden>
+  <header class="bar">
+    <button id="join-back" class="icon">‹</button>
+    <h1>Joins</h1>
+    <button id="join-next" class="btn small gold">Confirm ›</button>
+  </header>
+  <div class="pad">
+    <p class="hint">Tap the join between two clips to choose how they meet.</p>
+    <div id="join-list" class="list"></div>
+  </div>
+</section>
+
+<!-- ============ Confirm ============ -->
+<section id="s-confirm" class="screen" hidden>
+  <header class="bar">
+    <button id="conf-back" class="icon">‹</button>
+    <h1>Confirm</h1>
+    <button id="conf-home" class="btn small">Library</button>
+  </header>
+  <div class="pad">
+    <label>Title (a line he actually said) <input id="conf-title" autocomplete="off" placeholder="You are not the one holding God"></label>
+    <div id="conf-summary" class="summary"></div>
+    <div class="outputs">
+      <label class="check"><input type="checkbox" data-out="whatsapp_long" checked> WhatsApp HD (720p) <span class="est" data-est="whatsapp_long"></span></label>
+      <label class="check"><input type="checkbox" data-out="whatsapp_saver" checked> WhatsApp data-saver (540p) <span class="est" data-est="whatsapp_saver"></span></label>
+      <label class="check"><input type="checkbox" data-out="tiktok" checked> TikTok / Shorts (1080p) <span class="est" data-est="tiktok"></span></label>
+      <label class="check"><input type="checkbox" data-out="status"> WhatsApp Status (only if under 30 s)</label>
+    </div>
+    <div class="row">
+      <button id="conf-save" class="btn">Save for later</button>
+      <button id="conf-draft" class="btn gold">Make draft</button>
+    </div>
+    <div id="conf-status" class="status"></div>
+    <div id="conf-draftbox" class="draftbox" hidden>
+      <video id="draft-video" controls playsinline preload="metadata"></video>
+      <div class="row">
+        <button id="conf-change" class="btn">Change something</button>
+        <button id="conf-final" class="btn gold">Make final</button>
+      </div>
+    </div>
+    <div id="conf-files" class="files"></div>
+    <p class="hint">Send the WhatsApp file as a <b>document</b> (paperclip → Document), not as a video, so WhatsApp does not squash it.</p>
+  </div>
+</section>
+
+<div id="toast" class="toast" hidden></div>
+<script src="app.js"></script>
+</body>
+</html>

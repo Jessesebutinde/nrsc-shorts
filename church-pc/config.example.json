@@ -1,0 +1,8 @@
+{
+  "repo": "Jessesebutinde/nrsc-shorts",
+  "recordings_dir": "D:/NRSC-Recordings",
+  "work_dir": "D:/NRSC-Shorts-work",
+  "source_height": 720,
+  "segment_seconds": 1800,
+  "no_nvenc": false
+}

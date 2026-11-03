@@ -1,0 +1,54 @@
+name: Render clips
+
+on:
+  push:
+    paths:
+      - "recipes/**"
+  workflow_dispatch:
+  schedule:
+    - cron: "23 3 * * 1"   # Mondays 03:23 UTC: tidy old source uploads
+
+# One render at a time, so two phones saving recipes never fight over the same files.
+concurrency:
+  group: render
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    if: github.event_name != 'schedule'
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Make sure ffmpeg is installed
+        run: command -v ffmpeg || (sudo apt-get update && sudo apt-get install -y ffmpeg)
+
+      - name: Render whatever is behind
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: python3 worker/render.py
+
+  cleanup:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule'
+    steps:
+      - name: Delete source releases older than 14 days
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          cutoff=$(date -u -d '14 days ago' +%s)
+          gh release list --limit 200 --json tagName,createdAt \
+            --jq '.[] | select(.tagName | startswith("src-")) | "\(.tagName) \(.createdAt)"' |
+          while read -r tag created; do
+            if [ "$(date -u -d "$created" +%s)" -lt "$cutoff" ]; then
+              echo "deleting $tag"; gh release delete "$tag" --yes --cleanup-tag || true
+            fi
+          done

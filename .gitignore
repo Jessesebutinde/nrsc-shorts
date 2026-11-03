@@ -1,0 +1,4 @@
+work/
+work-*/
+__pycache__/
+church-pc/config.json
