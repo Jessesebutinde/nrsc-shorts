@@ -21,7 +21,7 @@ def gh(method, path, body=None, raw=None, ctype=None, ok404=False):
     cmd = ["gh", "api", "-X", method, "-H", "Accept: application/vnd.github+json", path]
     inp = None
     if raw is not None:
-        cmd[3:3] = ["-H", "Content-Type: " + (ctype or "application/octet-stream")]; cmd += ["--input", "-"]; inp = raw
+        cmd[2:2] = ["-H", "Content-Type: " + (ctype or "application/octet-stream")]; cmd += ["--input", "-"]; inp = raw
     elif body is not None:
         cmd += ["--input", "-"]; inp = json.dumps(body).encode()
     for attempt in range(4):
@@ -104,14 +104,11 @@ def process(job):
     tag = "clips-" + jid
     rel = gh("GET", f"/repos/{REPO}/releases/tags/{tag}", ok404=True) or gh("POST", f"/repos/{REPO}/releases",
           {"tag_name": tag, "name": f"Clips {jid}", "body": f"{job.get('title') or ''}\nSource: {job['url']}\nBy: {job.get('by')}", "prerelease": True})
-    have = {a["name"]: a for a in rel.get("assets", [])}
-    results = []
-    for name, o in outs:
-        if o.name not in have:
-            up = rel["upload_url"].split("{")[0].replace("https://api.github.com", "https://uploads.github.com") + "?name=" + o.name
-            a = gh("POST", up, raw=o.read_bytes(), ctype="video/mp4")
-        else: a = have[o.name]
-        results.append({"name": name, "file": o.name, "url": a["browser_download_url"], "size": o.stat().st_size})
+    files = [str(o) for _, o in outs]
+    p = subprocess.run(["gh", "release", "upload", tag, *files, "--clobber", "-R", REPO], capture_output=True, text=True, env=GHENV)
+    if p.returncode: raise RuntimeError("Upload failed: " + p.stderr[-300:])
+    have = {a["name"]: a for a in gh("GET", f"/repos/{REPO}/releases/{rel['id']}")["assets"]}
+    results = [{"name": n, "file": o.name, "url": have[o.name]["browser_download_url"], "size": o.stat().st_size} for n, o in outs]
     status(jid, "done", "Ready", outputs=results)
     shutil.rmtree(d, ignore_errors=True)
 
