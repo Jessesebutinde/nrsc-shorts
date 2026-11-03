@@ -577,6 +577,16 @@ async function refreshStatus() {
 
 // ------------------------------------------------------------------ start
 (function start() {
+  // One-time setup link: index.html#setup=<token>&name=<editor>
+  try {
+    const h = new URLSearchParams(location.hash.replace(/^#/, ''));
+    const t = h.get('setup');
+    if (t) {
+      cfg = Object.assign({}, cfg, { owner: cfg.owner || 'Jessesebutinde', repo: cfg.repo || 'nrsc-shorts', token: t.trim(), name: h.get('name') || cfg.name || '' });
+      LS.set('nrsc.cfg', cfg);
+      history.replaceState(null, '', location.pathname + location.search);
+    }
+  } catch (e) { /* ignore */ }
   if (!cfg.token || !cfg.owner || !cfg.repo) openSettings();
   else loadLibrary();
 })();
