@@ -1,6 +1,38 @@
 {
   "id": "20261103201426-fdt0",
-  "state": "working",
-  "message": "Uploading\u2026",
-  "updated": "2026-11-03T20:16:48.891234+00:00"
+  "state": "done",
+  "message": "Ready",
+  "updated": "2026-11-03T20:16:57.502687+00:00",
+  "outputs": [
+    {
+      "name": "Highlight (all clips)",
+      "file": "00-Highlight.mp4",
+      "url": "https://github.com/Jessesebutinde/nrsc-shorts/releases/download/clips-20261103201426-fdt0/00-Highlight.mp4",
+      "size": 10506335
+    },
+    {
+      "name": "Clip 1",
+      "file": "01-Clip-1.mp4",
+      "url": "https://github.com/Jessesebutinde/nrsc-shorts/releases/download/clips-20261103201426-fdt0/01-Clip-1.mp4",
+      "size": 1201183
+    },
+    {
+      "name": "Clip 2",
+      "file": "02-Clip-2.mp4",
+      "url": "https://github.com/Jessesebutinde/nrsc-shorts/releases/download/clips-20261103201426-fdt0/02-Clip-2.mp4",
+      "size": 1023207
+    },
+    {
+      "name": "Clip 3",
+      "file": "03-Clip-3.mp4",
+      "url": "https://github.com/Jessesebutinde/nrsc-shorts/releases/download/clips-20261103201426-fdt0/03-Clip-3.mp4",
+      "size": 3772168
+    },
+    {
+      "name": "Clip 4",
+      "file": "04-Clip-4.mp4",
+      "url": "https://github.com/Jessesebutinde/nrsc-shorts/releases/download/clips-20261103201426-fdt0/04-Clip-4.mp4",
+      "size": 4513587
+    }
+  ]
 }
