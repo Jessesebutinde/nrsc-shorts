@@ -1,6 +1,26 @@
 {
   "id": "test-zoo-1",
-  "state": "working",
-  "message": "Uploading\u2026",
-  "updated": "2026-11-03T20:05:17.851251+00:00"
+  "state": "done",
+  "message": "Ready",
+  "updated": "2026-11-03T20:05:24.430317+00:00",
+  "outputs": [
+    {
+      "name": "Highlight (all clips)",
+      "file": "00-Highlight.mp4",
+      "url": "https://github.com/Jessesebutinde/nrsc-shorts/releases/download/clips-test-zoo-1/00-Highlight.mp4",
+      "size": 1809220
+    },
+    {
+      "name": "Elephants",
+      "file": "01-Elephants.mp4",
+      "url": "https://github.com/Jessesebutinde/nrsc-shorts/releases/download/clips-test-zoo-1/01-Elephants.mp4",
+      "size": 1385225
+    },
+    {
+      "name": "Trunks",
+      "file": "02-Trunks.mp4",
+      "url": "https://github.com/Jessesebutinde/nrsc-shorts/releases/download/clips-test-zoo-1/02-Trunks.mp4",
+      "size": 425279
+    }
+  ]
 }
