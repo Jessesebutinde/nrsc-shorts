@@ -1,0 +1,1 @@
+{"id": "test-zoo-1", "url": "https://www.youtube.com/watch?v=jNQXAC9IVRw", "video_id": "jNQXAC9IVRw", "format": "vertical", "style": "blur", "title": "Test caption", "join": true, "by": "Grok test", "created": "2026-11-03T20:00:00Z", "clips": [{"name": "Elephants", "start": 1, "end": 6}, {"name": "Trunks", "start": 9, "end": 15}]}
