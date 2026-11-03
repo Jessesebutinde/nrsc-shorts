@@ -1,6 +1,7 @@
 {
   "id": "test-zoo-1",
-  "state": "working",
-  "message": "Uploading\u2026",
-  "updated": "2026-11-03T20:03:30.841772+00:00"
+  "state": "queued",
+  "message": "Retrying (1/3)\u2026",
+  "updated": "2026-11-03T20:04:00.178929+00:00",
+  "attempts": 1
 }
